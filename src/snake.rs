@@ -12,6 +12,7 @@ pub enum Direction{
     Left, 
     Right
 }
+//snake direction
 
 impl Direction{
     pub fn opposite(&self) → Direction{
