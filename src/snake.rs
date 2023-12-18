@@ -5,8 +5,7 @@ use piston_window::types::Color;
 use draw::draw_block;
 
 const SNAKE_COLOR: Color = [0.00, 0.80, 0.00, 1.0];
-#[derive(Copy, Clone)]
-
+#[derive(Copy, Clone, PartianEQ)]
 
 pub enum Direction{
     Up,
@@ -104,4 +103,41 @@ impl Snake{
     pub fn head_direction (&self) → Direction {
         self.direction
     }
+    
+    pub fn next_head(&self, dir: Option<Direction>)→ (i32, i32){
+        let (head_x, head_y): (i32, i32) = self.head_position();
+
+        let mut moving_dir = self.direction;
+        match dir{
+            Some(d) » moving_dir = d,
+            None » {}
+        }
+
+        match moving_dir {
+            Direction:: Up » (head_x, head_y - 1),
+            Direction:: Down » (head_x, head_y + 1),
+            Direction:: Left » (head_x - 1, head_y),
+            Direction:: Right » (head_x + 1, head_y),
+        }
+    }
+    pub fn restore_tail(&mut self) {
+        let blk = self.tail.clone().unwrap();
+        self.body.push_back(blk); //push clone tail to the back of the body
+
+    }
+
+    pub fn overlap_tail(&self, x: i32, y: i32) → bool{
+        let mut ch = 0;
+        for block in &self.body {
+            if x == block.x && y == block.y {
+                return true;
+            }
+            ch += 1;
+            if ch == self.body.len () - 1 {
+                break;
+            }            
+        }
+        return false;
+    }
+
 }
