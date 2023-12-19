@@ -1,17 +1,17 @@
 use piston_window::*;
-use piston_window::types::color;
+use piston_window::types::Color;
 
 use rand::{thread_rng, Rng};
 
-use snake::{Direction, Snake}:
-use draw::{draw_block, draw_rectangle};
+use crate::snake::{Direction, Snake};
+use crate::draw::{draw_block, draw_rectangle};
 
-const FOOD_COLOR: Color = [0.80, 0.00, 0.00, 1.0]
-const BORDER_COLOR : Color = [0.00, 0.00, 0.00, 1.0]
-const GAMEOVER_COLOR : Color = [0.90, 0.00, 0.00, 0.5]
+const FOOD_COLOR: Color = [0.80, 0.00, 0.00, 1.0];
+const BORDER_COLOR : Color = [0.00, 0.00, 0.00, 1.0];
+const GAMEOVER_COLOR : Color = [0.90, 0.00, 0.00, 0.5];
 
 const MOVING_PERIOD: f64 = 0.3;
-const RESTART_TIME: F64 = 1.0;
+const RESTART_TIME: f64 = 1.0;
 
 pub struct Game{
     snake: Snake,
@@ -28,16 +28,16 @@ pub struct Game{
 }
 
 impl Game {
-    pub fn new(width: i32, height:i32) → Game {
+    pub fn new(width: i32, height:i32) -> Game {
         Game {
             snake: Snake::new(2,2),
             waiting_time: 0.0
             food_exists: true,
             food_x: 6,
-            food_y: 4
+            food_y: 4,
             width,
             height,
-            game_over: false
+            game_over: false,
         }
     }
     pub fn key_pressed(&mut self, key: Key) {
@@ -45,11 +45,11 @@ impl Game {
             return;
         }
         let dir = match key {
-            Key:: Up » Some(Direction::Up),
-            Key:: Down » Some(Direction::Down),
-            Key:: Left » Some(Direction::Left),
-            Key:: Right » Some(Direction::Right)
-            _ » None
+            Key:: Up => Some(Direction::Up),
+            Key:: Down => Some(Direction::Down),
+            Key:: Left => Some(Direction::Left),
+            Key:: Right => Some(Direction::Right)
+            _ => None
         };
         if dir.unwrap() == self.snake.head_direction().opposite() {
             return;
@@ -99,7 +99,7 @@ impl Game {
         }
     }
 
-    fn check_if_snake_alive (&self, dir: Option<Direction>) → bool {
+    fn check_if_snake_alive (&self, dir: Option<Direction>) -> bool {
         let (next_x, next_y) = self.snake.next_head(dir);
 
         if self.snake.overlap_tail(next_x, next_y) {
