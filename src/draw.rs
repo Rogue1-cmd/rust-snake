@@ -1,5 +1,5 @@
 use piston_window :: {rectangle, Context, G2d};
-use piston_window :: types::color;
+use piston_window :: types::Color;
 
 const BLOCK_SIZE : f64 = 25.0;
 
@@ -18,15 +18,14 @@ pub fn draw_block(color: Color, x: i32, y: i32, con: &Context, g: &mut G2d){
     rectangle(
         color,
         //Rectangle parameters
-        [gui_x, gui_y, BLOCK_SIZE, BLOCK_SIZE]
+        [gui_x, gui_y, BLOCK_SIZE, BLOCK_SIZE],
         con.transform,
-        //graphics buffer
         g,
     );
 }
 
 pub fn draw_rectangle (
-    color: color,
+    color: Color,
     x: i32,
     y: i32,
     width: i32,

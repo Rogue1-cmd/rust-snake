@@ -5,7 +5,7 @@ use piston_window::types::Color;
 use crate::draw::draw_block;
 
 const SNAKE_COLOR: Color = [0.00, 0.80, 0.00, 1.0];
-#[derive(Copy, Clone, PartianEQ)]
+#[derive(Copy, Clone, PartialEq)]
 
 pub enum Direction{
     Up,
@@ -65,7 +65,7 @@ impl Snake{
 
     pub fn draw(&self, con: Context, g: &mut G2d) {
         for block in &self.body{
-            draw_block(SNAKE_COLOR, block.x, block.y, con, g);            
+            draw_block(SNAKE_COLOR, block.x, block.y, &con, g);            
         }
     }
     pub fn head_position(&self) -> (i32, i32){
@@ -88,8 +88,8 @@ impl Snake{
                 y: last_y + 1,
             },
             Direction::Left => Block{
-                x: last_x
-                y: last_y - 1
+                x: last_x - 1,
+                y: last_y,
             },
             Direction::Right => Block{
                 x: last_x + 1,

@@ -31,7 +31,7 @@ impl Game {
     pub fn new(width: i32, height:i32) -> Game {
         Game {
             snake: Snake::new(2,2),
-            waiting_time: 0.0
+            waiting_time: 0.0,
             food_exists: true,
             food_x: 6,
             food_y: 4,
@@ -48,17 +48,20 @@ impl Game {
             Key:: Up => Some(Direction::Up),
             Key:: Down => Some(Direction::Down),
             Key:: Left => Some(Direction::Left),
-            Key:: Right => Some(Direction::Right)
+            Key:: Right => Some(Direction::Right),
             _ => None
         };
-        if dir.unwrap() == self.snake.head_direction().opposite() {
-            return;
+        if let Some(dir) = dir{
+            if dir == self.snake.head_direction().opposite() {
+                return;
+            }
         }
+      
         self.update_snake(dir);
     }
 
     pub fn draw(&self, con: &Context, g: &mut G2d) {
-        self.snake.draw(con, g);
+        self.snake.draw(*con, g);
 
         if self.food_exists{
             draw_block(FOOD_COLOR, self.food_x, self.food_y, con, g);
@@ -69,11 +72,11 @@ impl Game {
         draw_rectangle(BORDER_COLOR, self.width - 1, 0, 1, self.height, con, g);
 
         if self.game_over {
-            draw_rectangle(GAMEOVER_COLOR, 0, 0, self.width, self.height. con, g)
+            draw_rectangle(GAMEOVER_COLOR, 0, 0, self.width, self.height, con, g)
         }
     }
 
-    pub fun update(&mut self, delta_time: f64){
+    pub fn update(&mut self, delta_time: f64){
         self.waiting_time += delta_time;
         
         if self.game_over {
@@ -111,11 +114,11 @@ impl Game {
     fn add_food(&mut self) {
         let mut rng = thread_rng();
 
-        let mut new_x = rng.gen_range(1, self.width - 1);
-        let mut new_y = rng.gen_range(1, self.width - 1);
+        let mut new_x = rng.gen_range(1..self.width - 1);
+        let mut new_y = rng.gen_range(1..self.height - 1);
         while self.snake.overlap_tail(new_x, new_y) {
-            new_x = rng.gen_range (1, self.width - 1);
-            new_y = rng.gen_range(1, self.width - 1);
+            new_x = rng.gen_range (1..self.width - 1);
+            new_y = rng.gen_range(1..self.height - 1);
         }
 
         self.food_x = new_x;
